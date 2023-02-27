@@ -77,12 +77,25 @@ class ResizingIntSet
   end
 
   def insert(num)
+    if !(@count < @store.length)
+      resize!
+    end
+
+      if !include?(num)
+        @store[num % (@store.length)] << num
+        @count += 1
+      end
   end
 
   def remove(num)
+    if include?(num)
+      @store[num % (@store.length)].delete(num)
+      @count -= 1
+    end
   end
 
   def include?(num)
+    @store[num % (@store.length)].include?(num)
   end
 
   private
@@ -92,9 +105,23 @@ class ResizingIntSet
   end
 
   def resize!
+    @store.length.times do
+      @store << []
+
+    end
+
+    (0..@store.length-1).each do |ele|
+      if !@store[ele].empty?
+        num = @store[ele].first
+        @store[ele].delete(num)
+        @store[num % @store.length] << num
+      end
+    end
+
   end
 
   def [](num)
     # optional but useful; return the bucket corresponding to `num`
+    @store[num]
   end
 end
