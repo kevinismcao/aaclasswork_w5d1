@@ -40,14 +40,21 @@ class IntSet
   end
 
   def insert(num)
-    index = num % @store.length
-    @store[index] << num
+    if !store.include?(num)
+      @store[num % @store.length] << num
+    end
+    
   end
 
   def remove(num)
+    if include?(num)
+      @store[num % @store.length].delete(num)
+    end
+
   end
 
   def include?(num)
+    @store[num % @store.length].include?(num)
   end
 
   private
